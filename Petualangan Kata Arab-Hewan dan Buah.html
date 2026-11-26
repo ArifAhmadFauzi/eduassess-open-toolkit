@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Petualangan Kata Arab: Hewan dan Buah</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+:root{color-scheme:light;--bg1:#d6f3ec;--bg2:#fff0c2;--card:#fffdf6;--ink:#12343b;--edge:#12343b;--mut:#4f7a80;--pri:#0f8b8d;--acc:#ff4d6d;--sun:#ffb703;--ok:#2fbf71;--bad:#ef476f;--line:#bfe0da;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg1:#0c262c;--bg2:#2a2540;--card:#16383f;--ink:#e8fbf7;--edge:#04161a;--mut:#9fcfc9;--line:#2d5a61;--pri:#14a3a5}}
+:root[data-theme="dark"]{color-scheme:dark;--bg1:#0c262c;--bg2:#2a2540;--card:#16383f;--ink:#e8fbf7;--edge:#04161a;--mut:#9fcfc9;--line:#2d5a61;--pri:#14a3a5}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100vh;font-family:'Baloo 2',system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,var(--bg1),var(--bg2)) fixed var(--bg1)}
+.app{max-width:760px;margin:0 auto;padding:16px}
+header{text-align:center;padding:6px 0 2px}
+.hd{font-family:'Amiri','Noto Naskh Arabic',serif;font-size:clamp(1.8rem,7vw,2.8rem);font-weight:700;color:var(--acc);line-height:1.5}
+h1{margin:0;font-size:clamp(1.5rem,5.5vw,2.3rem);font-weight:800;line-height:1.1}
+.sub{color:var(--mut);margin:4px 0 12px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin:8px 0}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip,.tab,.btn,.opt,.mc,.tile{font-family:inherit;color:var(--ink);cursor:pointer}
+.chip,.tab{border:3px solid var(--edge);background:var(--card);border-radius:99px;padding:4px 14px;font-weight:700;font-size:1rem;box-shadow:3px 3px 0 var(--edge)}
+.chip.on,.tab.on{background:var(--sun);color:#12343b}
+.chip:focus-visible,.tab:focus-visible,.btn:focus-visible,.opt:focus-visible,.mc:focus-visible,.tile:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.star{border:3px solid var(--edge);background:var(--card);border-radius:99px;padding:4px 14px;font-weight:800;box-shadow:3px 3px 0 var(--edge)}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:4px 4px 12px}
+.tab{white-space:nowrap}
+#stage{background:var(--card);border:3px solid var(--edge);border-radius:28px;padding:20px;box-shadow:6px 6px 0 var(--edge);min-height:430px;text-align:center}
+.big{font-size:6rem;line-height:1.15}
+.emo{font-size:3rem;line-height:1.2}
+.ar{font-family:'Amiri','Noto Naskh Arabic',serif;font-size:3.4rem;line-height:1.7;font-weight:700;direction:rtl}
+.ar.sm{font-size:2rem;line-height:1.5}
+.tr{color:var(--pri);font-weight:800;font-size:1.25rem}
+.id{font-weight:700;font-size:1.3rem}
+.hint{color:var(--mut);margin:6px 0}
+.row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.btn{border:3px solid var(--edge);background:var(--card);border-radius:16px;padding:8px 18px;font-weight:800;font-size:1.05rem;box-shadow:3px 3px 0 var(--edge)}
+.btn:active,.tile:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--edge)}
+.btn.pri{background:var(--pri);color:#fff}
+.btn.good{background:var(--ok);color:#fff}
+.btn.bad{background:var(--bad);color:#fff}
+.flip{perspective:900px;height:290px;margin:12px auto;max-width:420px;position:relative;cursor:pointer}
+.face{position:absolute;inset:0;border:3px solid var(--edge);border-radius:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;backface-visibility:hidden;transition:transform .5s;background:var(--bg2)}
+.back{transform:rotateY(180deg);background:var(--bg1)}
+.flip.on .front{transform:rotateY(-180deg)}
+.flip.on .back{transform:rotateY(0)}
+.bar{height:12px;background:var(--line);border:2px solid var(--edge);border-radius:9px;overflow:hidden;margin:8px 0}
+.bar i{display:block;height:100%;background:var(--ok);transition:width .9s linear}
+.q{margin:6px 0 14px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.opt{border:3px solid var(--edge);background:var(--card);border-radius:18px;padding:8px;min-height:84px;box-shadow:3px 3px 0 var(--edge)}
+.opt.ok{background:var(--ok);color:#fff}
+.opt.no{background:var(--bad);color:#fff;animation:sh .4s}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.mc{aspect-ratio:1;border:3px solid var(--edge);border-radius:18px;background:var(--pri);font-size:2rem;color:#fff;box-shadow:3px 3px 0 var(--edge);display:grid;place-items:center}
+.mc span{display:none}
+.mc:not(.up):not(.done)::before{content:'❓'}
+.mc.up,.mc.done{background:var(--card);color:var(--ink)}
+.mc.up span,.mc.done span{display:inline}
+.mc.done{background:var(--ok);color:#fff}
+.mc .ar.sm{font-size:1.7rem}
+.slots,.tiles{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:14px 0}
+.sl{width:52px;height:60px;border:3px dashed var(--line);border-radius:14px;display:grid;place-items:center;font:700 2rem 'Amiri',serif}
+.sl.f{border:3px solid var(--edge);background:var(--bg1);cursor:pointer}
+.tile{width:52px;height:60px;border-radius:14px;border:3px solid var(--edge);background:var(--sun);color:#12343b;font:700 2rem 'Amiri',serif;box-shadow:3px 3px 0 var(--edge)}
+.tile:disabled{opacity:.25;box-shadow:none}
+.hud{display:flex;justify-content:space-between;font-weight:800;font-size:1.2rem}
+.fb{min-height:34px;font-weight:700;font-size:1.15rem;margin-top:10px}
+.end h2{margin:6px 0}
+.fall{position:fixed;top:-50px;animation:fl 2.6s ease-in forwards;pointer-events:none;z-index:9}
+@keyframes fl{to{transform:translateY(115vh) rotate(360deg)}}
+@keyframes sh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.note{text-align:center;color:var(--mut);font-size:.9rem;margin:14px 0 4px}
+@media(max-width:420px){.big{font-size:5rem}.ar{font-size:2.8rem}.sl,.tile{width:44px;height:52px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="hd">الحَيَوَانَاتُ وَالفَوَاكِهُ</div>
+  <h1>Petualangan Kata Arab</h1>
+  <p class="sub">Kenali nama hewan dan buah dalam Bahasa Arab lewat lima permainan.</p>
+</header>
+<div class="top">
+  <div class="chips" id="chips"></div>
+  <div class="star">⭐ <b id="st">0</b></div>
+</div>
+<nav class="tabs" id="tabs"></nav>
+<main id="stage"></main>
+<p class="note">Tombol 🔊 memakai suara Arab bawaan perangkat, jadi hasilnya bisa berbeda di tiap perangkat.</p>
+</div>
+<script>
+const D=[
+['🦁','أَسَد','asad','Singa','a'],['🐘','فِيل','fīl','Gajah','a'],['🐱','قِطَّة','qiththah','Kucing','a'],['🐶','كَلْب','kalb','Anjing','a'],
+['🐴','حِصَان','hishān','Kuda','a'],['🐄','بَقَرَة','baqarah','Sapi','a'],['🐪','جَمَل','jamal','Unta','a'],['🐰','أَرْنَب','arnab','Kelinci','a'],
+['🐟','سَمَكَة','samakah','Ikan','a'],['🐦','عُصْفُور','‘ushfūr','Burung','a'],['🐒','قِرْد','qird','Monyet','a'],['🐔','دَجَاجَة','dajājah','Ayam','a'],
+['🍎','تُفَّاحَة','tuffāhah','Apel','f'],['🍌','مَوْزَة','mawzah','Pisang','f'],['🍊','بُرْتُقَالَة','burtuqālah','Jeruk','f'],['🍇','عِنَب','‘inab','Anggur','f'],
+['🍉','بِطِّيخ','bitthīkh','Semangka','f'],['🍓','فَرَاوِلَة','farāwilah','Stroberi','f'],['🍍','أَنَاناس','ananās','Nanas','f'],['🥭','مَانْجَا','mānjā','Mangga','f'],
+['🍑','خَوْخ','khawkh','Persik','f'],['🍐','كُمَّثْرَى','kummathrā','Pir','f'],['🍋','لَيْمُون','laymūn','Lemon','f'],['🍒','كَرَز','karaz','Ceri','f']];
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+let cat='all',mode='cards',T=null,stars=0;
+try{stars=+localStorage.getItem('ka_stars')||0}catch(e){}
+const pool=()=>D.filter(d=>cat=='all'||d[4]==cat);
+const shuf=a=>a.map(x=>[Math.random(),x]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+const strip=s=>s.replace(/[\u064B-\u0652\u0670]/g,'');
+function say(t){try{const u=new SpeechSynthesisUtterance(t);u.lang='ar-SA';u.rate=.8;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+function add(n){stars+=n;$('#st').textContent=stars;try{localStorage.setItem('ka_stars',stars)}catch(e){}}
+function rain(){for(let i=0;i<18;i++){const s=document.createElement('span');s.className='fall';s.textContent=D[Math.random()*D.length|0][0];s.style.cssText=`left:${Math.random()*95}%;animation-delay:${Math.random()*1.2}s;font-size:${22+Math.random()*20}px`;document.body.appendChild(s);setTimeout(()=>s.remove(),4000)}}
+function fin(t,m,e){$('#stage').innerHTML=`<div class="end"><div class="big">${e}</div><h2>${t} selesai!</h2><p class="id">${m}</p><div class="row"><button class="btn pri" id="ag">Main lagi</button></div></div>`;$('#ag').onclick=()=>go(mode);rain()}
+const R={};
+
+R.cards=()=>{let L=shuf(pool()),i=0,f=0;
+const draw=()=>{const d=L[i];
+$('#stage').innerHTML=`<div class="hint">Kartu ${i+1} dari ${L.length}. Ketuk kartu untuk membaliknya.</div>
+<div class="flip ${f?'on':''}" id="fl"><div class="face front"><div class="big">${d[0]}</div><div class="id">${d[3]}</div></div><div class="face back"><div class="ar">${d[1]}</div><div class="tr">${d[2]}</div><div class="id">${d[3]}</div></div></div>
+<div class="row"><button class="btn" id="pv">◀ Sebelumnya</button><button class="btn pri" id="sp">🔊 Dengarkan</button><button class="btn" id="nx">Berikutnya ▶</button></div>`;
+$('#fl').onclick=()=>{f=!f;$('#fl').classList.toggle('on',f);if(f)say(d[1])};
+$('#sp').onclick=()=>say(d[1]);
+$('#pv').onclick=()=>{i=(i+L.length-1)%L.length;f=0;draw()};
+$('#nx').onclick=()=>{i=(i+1)%L.length;f=0;draw()}};
+draw()};
+
+R.quiz=()=>{let n=0,sc=0,L=shuf(pool()).slice(0,10);
+const q=()=>{if(n>=10)return fin('Tebak Gambar',`Skor kamu ${sc} dari 10`,sc>=9?'🏆':sc>=6?'🌟':'👍');
+const d=L[n],rev=n%2,o=shuf([d,...shuf(pool().filter(x=>x!==d)).slice(0,3)]);
+$('#stage').innerHTML=`<div class="hint">Soal ${n+1} dari 10. Skor ${sc}</div><div class="bar"><i style="width:${n*10}%"></i></div>
+<div class="q">${rev?`<div class="ar">${d[1]}</div><div class="hint">Gambar mana yang cocok?</div>`:`<div class="big">${d[0]}</div><div class="hint">Apa bahasa Arabnya?</div>`}</div>
+<div class="opts">${o.map((x,k)=>`<button class="opt" data-k="${k}">${rev?`<span class="emo">${x[0]}</span>`:`<span class="ar sm">${x[1]}</span>`}</button>`).join('')}</div><div id="fb" class="fb"></div>`;
+$$('.opt').forEach(b=>b.onclick=()=>{const ok=o[+b.dataset.k]===d;
+$$('.opt').forEach(z=>{z.disabled=1;if(o[+z.dataset.k]===d)z.classList.add('ok')});
+if(ok){sc++;add(1)}else b.classList.add('no');
+say(d[1]);$('#fb').textContent=`${ok?'🎉 Benar!':'Hampir!'} ${d[1]} (${d[2]}) artinya ${d[3]}`;
+setTimeout(()=>{n++;q()},1500)})};
+q()};
+
+R.match=()=>{const L=shuf(pool()).slice(0,6);let C=shuf(L.flatMap((d,k)=>[{k,t:'e',h:d[0]},{k,t:'a',h:d[1]}])),sel=[],mv=0,got=0;
+$('#stage').innerHTML=`<div class="hint">Buka dua kartu, cocokkan gambar dengan kata Arabnya. Langkah: <b id="mv">0</b></div>
+<div class="grid">${C.map((c,i)=>`<button class="mc" data-i="${i}"><span class="${c.t=='a'?'ar sm':'emo'}">${c.h}</span></button>`).join('')}</div><div id="fb" class="fb"></div>`;
+$$('.mc').forEach(b=>b.onclick=()=>{if(b.classList.contains('up')||b.classList.contains('done')||sel.length>1)return;
+b.classList.add('up');const c=C[+b.dataset.i];if(c.t=='a')say(c.h);sel.push(b);
+if(sel.length==2){mv++;$('#mv').textContent=mv;const[x,y]=sel.map(z=>C[+z.dataset.i]);
+if(x.k==y.k&&x.t!=y.t){sel.forEach(z=>{z.classList.remove('up');z.classList.add('done')});sel=[];got++;add(1);$('#fb').textContent=`✅ ${L[x.k][1]} = ${L[x.k][3]}`;
+if(got==6)setTimeout(()=>fin('Cocokkan Kartu',`Semua pasangan ketemu dalam ${mv} langkah`,mv<=9?'🏆':mv<=14?'🌟':'👍'),900)}
+else setTimeout(()=>{sel.forEach(z=>z.classList.remove('up'));sel=[]},800)}})};
+
+R.scr=()=>{const L=shuf(pool().filter(d=>strip(d[1]).length>=3)).slice(0,8);let n=0,sc=0;
+const w=()=>{if(n>=L.length)return fin('Susun Huruf',`Benar ${sc} dari ${L.length} kata`,sc>=7?'🏆':sc>=4?'🌟':'👍');
+const d=L[n],p=[...strip(d[1])];let lt=shuf(p.map(c=>({c,u:0}))),an=[];
+const draw=()=>{$('#stage').innerHTML=`<div class="hint">Kata ${n+1} dari ${L.length}. Susun huruf dari kanan ke kiri.</div><div class="big">${d[0]}</div><div class="id">${d[3]}</div>
+<div class="slots" dir="rtl">${p.map((_,k)=>`<span class="sl ${an[k]?'f':''}">${an[k]?an[k].c:''}</span>`).join('')}</div>
+<div class="tiles" dir="rtl">${lt.map((x,k)=>`<button class="tile" data-t="${k}" ${x.u?'disabled':''}>${x.c}</button>`).join('')}</div>
+<div id="fb" class="fb"></div><div class="row"><button class="btn" id="rs">↺ Ulang</button><button class="btn" id="sk">Lewati ▶</button></div>`;
+$$('.sl.f').forEach(s=>s.onclick=()=>{if(an.length==p.length)return;an.pop().u=0;draw()});
+$('#rs').onclick=()=>{an=[];lt.forEach(z=>z.u=0);draw()};
+$('#sk').onclick=()=>{n++;w()};
+$$('.tile').forEach(b=>b.onclick=()=>{const x=lt[+b.dataset.t];x.u=1;an.push(x);draw();
+if(an.length<p.length)return;
+if(an.map(z=>z.c).join('')==p.join('')){sc++;add(2);say(d[1]);$('#fb').textContent=`🎉 ${d[1]} (${d[2]})`;$$('.tile,.btn').forEach(z=>z.disabled=1);setTimeout(()=>{n++;w()},1500)}
+else{$('#fb').textContent='Belum tepat, coba lagi.';setTimeout(()=>{an=[];lt.forEach(z=>z.u=0);draw()},900)}})};
+draw()};
+w()};
+
+R.tf=()=>{let t=30,sc=0,d,s,ok,P=pool();
+$('#stage').innerHTML=`<div class="hud"><span>⏱ <b id="tm">30</b> detik</span><span>Skor <b id="sc">0</b></span></div><div class="bar"><i id="tb" style="width:100%"></i></div>
+<div class="hint">Apakah kata Arab ini cocok dengan gambarnya?</div><div class="q" id="tq"></div>
+<div class="row"><button class="btn bad" id="no">✖ Salah</button><button class="btn good" id="yes">✔ Benar</button></div><div id="fb" class="fb"></div>`;
+const nx=()=>{d=P[Math.random()*P.length|0];ok=Math.random()<.5;s=ok?d:shuf(P.filter(x=>x!==d))[0];$('#tq').innerHTML=`<div class="big">${d[0]}</div><div class="ar">${s[1]}</div>`};
+const ans=v=>{const r=v===ok;if(r){sc++;add(1)}$('#sc').textContent=sc;$('#fb').textContent=`${r?'✅':'❌'} ${d[1]} = ${d[3]}`;nx()};
+$('#yes').onclick=()=>ans(true);$('#no').onclick=()=>ans(false);nx();
+T=setInterval(()=>{t--;$('#tm').textContent=t;$('#tb').style.width=t/30*100+'%';
+if(t<=0){clearInterval(T);fin('Kilat Benar atau Salah',`Skor kamu ${sc}`,sc>=14?'🏆':sc>=8?'🌟':'👍')}},1000)};
+
+const TABS=[['cards','🃏','Kartu'],['quiz','🖼️','Tebak'],['match','🧩','Pasangan'],['scr','🔤','Susun'],['tf','⚡','Kilat']];
+const CATS=[['all','Semua'],['a','🐾 Hewan'],['f','🍎 Buah']];
+function go(m){clearInterval(T);mode=m;$$('.tab').forEach(b=>b.classList.toggle('on',b.dataset.m==m));R[m]()}
+$('#tabs').innerHTML=TABS.map(t=>`<button class="tab" data-m="${t[0]}">${t[1]} ${t[2]}</button>`).join('');
+$('#chips').innerHTML=CATS.map(c=>`<button class="chip ${c[0]==cat?'on':''}" data-c="${c[0]}">${c[1]}</button>`).join('');
+$$('.tab').forEach(b=>b.onclick=()=>go(b.dataset.m));
+$$('.chip').forEach(b=>b.onclick=()=>{cat=b.dataset.c;$$('.chip').forEach(z=>z.classList.toggle('on',z===b));go(mode)});
+$('#st').textContent=stars;
+go('cards');
+</script>
+</body>
+</html>
